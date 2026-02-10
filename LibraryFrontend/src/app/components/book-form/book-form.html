@@ -1,0 +1,46 @@
+<div [class.form-container]="!isModal" [style.padding]="isModal ? '2rem' : ''">
+    <h2>{{ isEditMode ? ('EDIT_BOOK_TITLE' | translate) : ('ADD_BOOK_TITLE' | translate) }}</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="title">Title <span class="required-asterisk">*</span></label>
+            <input type="text" id="title" class="form-control" formControlName="title">
+            <div *ngIf="submitted && bookForm.get('title')?.errors?.['required']" class="text-danger">Title is
+                required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="author">Author <span class="required-asterisk">*</span></label>
+            <input type="text" id="author" class="form-control" formControlName="author">
+            <div *ngIf="submitted && bookForm.get('author')?.errors?.['required']" class="text-danger">Author is
+                required</div>
+        </div>
+
+        <div class="form-group">
+            <label for="isbn">ISBN <span class="required-asterisk">*</span></label>
+            <input type="text" id="isbn" class="form-control" formControlName="isbn">
+            <div *ngIf="submitted && bookForm.get('isbn')?.errors?.['required']" class="text-danger">ISBN is
+                required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" class="form-control" formControlName="categoryId">
+                <option value="">-- Select Category --</option>
+                <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+            </select>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" id="isAvailable" class="form-check-input" formControlName="isAvailable">
+            <label for="isAvailable">Available</label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ 'SAVE' | translate }}</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">{{ 'CANCEL' | translate
+                }}</button>
+        </div>
+    </form>
+</div>

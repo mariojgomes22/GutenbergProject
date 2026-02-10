@@ -1,0 +1,70 @@
+<div class="form-container">
+  <h2>{{ 'PROFILE' | translate }}</h2>
+
+  <!-- Tab Navigation -->
+  <div class="tabs-container">
+    <button (click)="activeTab = 'profile'" [class.active]="activeTab === 'profile'" class="tab-btn">
+      {{ 'GENERAL_SETTINGS' | translate }}
+    </button>
+    <button (click)="activeTab = 'loans'" [class.active]="activeTab === 'loans'" class="tab-btn">
+      {{ 'LOAN_HISTORY' | translate }}
+    </button>
+  </div>
+
+  <!-- Profile Form Tab -->
+  <div *ngIf="activeTab === 'profile'" class="tab-content">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" style="margin-bottom: 30px;">
+      <div class="form-group">
+        <label for="name">{{ 'NAME' | translate }}</label>
+        <input type="text" id="name" class="form-control" formControlName="name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">{{ 'EMAIL' | translate }}</label>
+        <input type="email" id="email" class="form-control" formControlName="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'PASSWORD' | translate }}</label>
+        <input type="password" id="password" class="form-control" formControlName="password">
+      </div>
+
+      <div *ngIf="message" class="text-center"
+        style="margin-bottom: 1rem; color: var(--success-color); font-weight: bold;">
+        {{ message }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">{{ 'SAVE' | translate }}</button>
+    </form>
+  </div>
+
+  <!-- Loans Usage Tab -->
+  <div *ngIf="activeTab === 'loans'" class="tab-content">
+    <h3 style="margin-top: 10px;">{{ 'LOAN_HISTORY' | translate }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{ 'TABLE_TITLE' | translate }}</th>
+          <th>{{ 'LOAN_DATE' | translate }}</th>
+          <th>{{ 'RETURN_DATE' | translate }}</th>
+          <th>{{ 'TABLE_STATUS' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let loan of myLoans">
+          <td>{{ loan.book?.title }}</td>
+          <td>{{ loan.loanDate | date:'mediumDate' }}</td>
+          <td>{{ loan.returnDate ? (loan.returnDate | date:'mediumDate') : '-' }}</td>
+          <td>
+            <span [class.badge-success]="loan.returnDate" [class.badge-danger]="!loan.returnDate">
+              {{ loan.returnDate ? ('RETURNED' | translate) : ('ACTIVE' | translate) }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="myLoans.length === 0">
+          <td colspan="4" class="text-center">{{ 'NO_RECORDS_FOUND' | translate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

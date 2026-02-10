@@ -1,0 +1,45 @@
+<nav class="navbar">
+  <h1>{{ 'APPTITLE' | translate }}</h1>
+
+  <ul *ngIf="authService.isLoggedIn">
+    <li><a routerLink="/books" routerLinkActive="active">{{ 'BOOKS' | translate }}</a></li>
+    <li class="nav-item" *ngIf="authService.isAdmin">
+      <a class="nav-link" routerLink="/clients">{{ 'CLIENTS' | translate }}</a>
+    </li>
+    <li class="nav-item" *ngIf="authService.isAdmin">
+      <a class="nav-link" routerLink="/categories">{{ 'CATEGORIES' | translate }}</a>
+    </li>
+    <li class="nav-item" *ngIf="authService.isAdmin">
+      <a class="nav-link" routerLink="/loans">{{ 'LOANS' | translate }}</a>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <!-- TODO: Language Switcher is disabled for now. All is working but for now is disabled.-->
+    <!-- 
+    <div class="lang-switcher">
+      <button (click)="switchLanguage('en')" class="btn-lang"
+        [class.active]="translate.currentLang === 'en'">EN</button>
+      <button (click)="switchLanguage('pt')" class="btn-lang"
+        [class.active]="translate.currentLang === 'pt'">PT</button>
+    </div> 
+  -->
+
+    <div *ngIf="authService.isLoggedIn" style="display: flex; align-items: center; gap: 10px;">
+      <a routerLink="/profile" style="color: #ddd; text-decoration: none; display: flex; align-items: center;">
+        <span style="margin-right: 5px;">{{ authService.currentUser()?.name }}</span>
+        <small>({{ 'PROFILE' | translate }})</small>
+      </a>
+      <button (click)="logout()" class="btn btn-sm btn-secondary">{{ 'LOGOUT' | translate }}</button>
+    </div>
+
+    <div *ngIf="!authService.isLoggedIn && !isLoginPage" class="nav-actions">
+      <a routerLink="/login" class="nav-link">{{ 'LOGIN' | translate }}</a>
+      <a routerLink="/register" class="btn btn-outline">{{ 'REGISTER' | translate }}</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

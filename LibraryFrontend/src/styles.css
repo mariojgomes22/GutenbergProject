@@ -1,0 +1,394 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #95a5a6;
+  --accent-color: #2C6DA7;
+  --danger-color: #e74c3c;
+  --success-color: #2ecc71;
+  --light-bg: #ecf0f1;
+  --text-color: #000000;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-lang {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ddd;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-lang.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-color: white;
+  font-weight: bold;
+}
+
+.btn-lang:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  margin-left: 20px;
+}
+
+.navbar a {
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white !important;
+  /* Force white text */
+}
+
+.btn-primary:hover {
+  background-color: #245b8f;
+  /* Darker shade of new blue */
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white !important;
+  /* Force white text */
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white !important;
+  /* Force white text */
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  margin-right: 5px;
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.badge-success {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.badge-danger {
+  color: var(--danger-color);
+  font-weight: bold;
+}
+
+/* Forms */
+.form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.required-asterisk {
+  color: var(--danger-color);
+  margin-left: 2px;
+}
+
+/* Ensure form controls inherit global font settings or use explicit values */
+input,
+select,
+textarea,
+button {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 13px !important;
+  color: var(--text-color) !important;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px !important;
+  box-sizing: border-box;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-group input {
+  margin-right: 10px;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.text-danger {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: white;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Ensure actions don't overlap with content if overflow is visible */
+.mat-mdc-dialog-actions {
+  margin-bottom: 0 !important;
+  padding-bottom: 10px !important;
+  padding-top: 0 !important;
+  min-height: auto !important;
+}
+
+/* Force standard button styles within Dialog Actions */
+.mat-mdc-dialog-actions button {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  border-radius: 4px !important;
+  height: auto !important;
+  min-width: auto !important;
+  padding: 0.5rem 1rem !important;
+  line-height: normal !important;
+}
+
+.mat-mdc-dialog-actions button.btn-primary {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.mat-mdc-dialog-actions button.btn-secondary {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.mat-mdc-dialog-actions button.btn-danger {
+  background-color: var(--danger-color) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.mat-mdc-paginator {
+  font-size: 0.85rem !important;
+  min-height: 40px !important;
+}
+
+.mat-mdc-paginator-container {
+  min-height: 40px !important;
+  padding: 0 8px !important;
+}
+
+.mat-mdc-paginator-page-size-label,
+.mat-mdc-paginator-range-label {
+  margin: 0 10px !important;
+}
+
+/* Dropdown (Select) Styles */
+.mat-mdc-paginator .mat-mdc-select-value {
+  font-size: 0.85rem !important;
+}
+
+.mat-mdc-paginator .mat-mdc-select-trigger {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.mat-mdc-select-panel.mat-mdc-paginator-page-size-select {
+  background-color: #ecf0f1 !important;
+  /* Light Gray */
+}
+
+.mat-mdc-option {
+  font-size: 0.85rem !important;
+  min-height: 36px !important;
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

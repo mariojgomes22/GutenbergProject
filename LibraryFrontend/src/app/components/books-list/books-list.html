@@ -1,0 +1,66 @@
+<div class="header-actions">
+  <h2>{{ 'BOOK_TITLE' | translate }}</h2>
+  <button *ngIf="authService.isAdmin" (click)="openModal()" class="btn btn-primary">{{ 'ADD_BOOK' | translate
+    }}</button>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar" style="margin-bottom: 20px;">
+  <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+    placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}" class="form-control"
+    style="max-width: 300px; display: inline-block; margin-right: 10px;">
+  <button (click)="onSearch()" class="btn btn-secondary">{{ 'SEARCH' | translate }}</button>
+</div>
+
+<div *ngIf="message" class="text-center" style="margin-bottom: 1rem; color: var(--success-color); font-weight: bold;">
+  {{ message }}
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{ 'TABLE_TITLE' | translate }}</th>
+      <th>{{ 'TABLE_AUTHOR' | translate }}</th>
+      <th>{{ 'TABLE_CATEGORY' | translate }}</th>
+      <th>{{ 'TABLE_ISBN' | translate }}</th>
+      <th>{{ 'TABLE_STATUS' | translate }}</th>
+      <th>{{ 'ACTIONS' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.category?.name || '-' }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>
+        <span [class.badge-success]="book.isAvailable" [class.badge-danger]="!book.isAvailable">
+          {{ book.isAvailable ? 'Yes' : 'No' }}
+        </span>
+      </td>
+      <td>
+        <!-- Admin Actions -->
+        <ng-container *ngIf="authService.isAdmin">
+          <button class="btn btn-sm btn-secondary" (click)="openModal(book.id)">{{ 'EDIT' | translate}}</button>
+          <button (click)="deleteBook(book.id)" class="btn btn-sm btn-danger">{{ 'DELETE' | translate}}</button>
+        </ng-container>
+
+        <!-- User Actions -->
+        <ng-container *ngIf="!authService.isAdmin && authService.isLoggedIn">
+          <button *ngIf="book.isAvailable" (click)="requestBook(book)" class="btn btn-sm btn-primary">{{ 'REQUEST' |
+            translate }}</button>
+          <span *ngIf="!book.isAvailable" class="text-danger" style="font-size: 0.8rem;">{{ 'UNAVAILABLE' |
+            translate}}</span>
+        </ng-container>
+      </td>
+    </tr>
+    <tr *ngIf="books.length === 0">
+      <td colspan="5" class="text-center">{{ 'NO_BOOKS_FOUND' | translate }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="onPageChange($event)" [pageIndex]="currentPage - 1" showFirstLastButtons>
+</mat-paginator>

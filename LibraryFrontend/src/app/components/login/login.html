@@ -1,0 +1,29 @@
+<div class="form-container">
+    <h2>{{ 'LOGIN' | translate }}</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="email">{{ 'EMAIL' | translate }}</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+        </div>
+
+        <div class="form-group">
+            <label for="password">{{ 'PASSWORD' | translate }}</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+        </div>
+
+        <div *ngIf="error" class="text-danger" style="margin-bottom: 1rem;">
+            {{ error }}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 15px;">{{ 'LOGIN' |
+            translate }}</button>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+           <asl-google-signin-button type="standard" size="large"></asl-google-signin-button>
+        </div>
+
+        <div class="text-center">
+            Don't have an account? <a routerLink="/register">{{ 'REGISTER' | translate }}</a>
+        </div>
+    </form>
+</div>

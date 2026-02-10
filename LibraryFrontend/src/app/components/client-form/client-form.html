@@ -1,0 +1,41 @@
+<div [class.form-container]="!isModal" [style.padding]="isModal ? '2rem' : ''">
+    <h2>{{ isEditMode ? ('EDIT_USER_TITLE' | translate) : ('ADD_USER_TITLE' | translate) }}</h2>
+    <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Name <span class="required-asterisk">*</span></label>
+            <input type="text" id="name" class="form-control" formControlName="name">
+            <div *ngIf="submitted && clientForm.get('name')?.errors?.['required']" class="text-danger">Name is
+                required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">{{ 'SAVE' | translate }} <span class="required-asterisk">*</span></label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+            <div *ngIf="submitted && clientForm.get('email')?.errors?.['required']" class="text-danger">Email is
+                required</div>
+            <div *ngIf="submitted && clientForm.get('email')?.errors?.['email']" class="text-danger">Invalid email
+                format</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">{{ 'PASSWORD' | translate }}</label>
+            <input type="password" id="password" class="form-control" formControlName="password"
+                placeholder="{{ isEditMode ? 'Leave blank to keep current' : '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="role">{{ 'ROLE' | translate }} <span class="required-asterisk">*</span></label>
+            <select id="role" class="form-control" formControlName="role">
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ 'SAVE' | translate }}</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">{{ 'CANCEL' | translate
+                }}</button>
+        </div>
+    </form>
+</div>

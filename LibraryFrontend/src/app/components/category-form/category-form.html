@@ -1,0 +1,15 @@
+<div [class.form-container]="!isModal" [style.padding]="isModal ? '2rem' : ''">
+    <h2>{{ isEditMode ? ('EDIT_CATEGORY' | translate) : ('ADD_CATEGORY' | translate) }}</h2>
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">{{ 'NAME' | translate }} <span class="required-asterisk">*</span></label>
+            <input type="text" id="name" class="form-control" formControlName="name">
+            <div *ngIf="submitted && categoryForm.get('name')?.invalid" class="text-danger">Name is required</div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ 'SAVE' | translate }}</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">{{ 'CANCEL' | translate }}</button>
+        </div>
+    </form>
+</div>

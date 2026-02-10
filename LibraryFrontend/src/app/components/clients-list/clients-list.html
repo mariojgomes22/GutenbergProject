@@ -1,0 +1,35 @@
+<div class="header-actions">
+    <h2>{{ 'CLIENTS_TITLE' | translate }}</h2>
+    <button (click)="openModal()" class="btn btn-primary">{{ 'ADD_CLIENT' | translate }}</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'NAME' | translate }}</th>
+            <th>{{ 'EMAIL' | translate }}</th>
+            <th>{{ 'ROLE' | translate }}</th>
+            <th>{{ 'ACTIONS' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let client of clients">
+            <td>{{ client.name }}</td>
+            <td>{{ client.email }}</td>
+            <td>
+                <span [class.badge-success]="client.role === 'Admin'" [class.badge-secondary]="client.role !== 'Admin'">
+                    {{ client.role }}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-secondary" (click)="openModal(client.id)">{{ 'EDIT' | translate
+                    }}</button>
+                <button (click)="deleteClient(client.id)" class="btn btn-sm btn-danger">{{ 'DELETE' | translate
+                    }}</button>
+            </td>
+        </tr>
+        <tr *ngIf="clients.length === 0">
+            <td colspan="3" class="text-center">{{ 'NO_CLIENTS_FOUND' | translate }}</td>
+        </tr>
+    </tbody>
+</table>

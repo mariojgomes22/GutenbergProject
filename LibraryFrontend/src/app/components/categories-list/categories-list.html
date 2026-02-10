@@ -1,0 +1,27 @@
+<div class="header-actions">
+    <h2>{{ 'CATEGORIES_TITLE' | translate }}</h2>
+    <button (click)="openModal()" class="btn btn-primary">{{ 'ADD_CATEGORY' | translate }}</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'NAME' | translate }}</th>
+            <th>{{ 'ACTIONS' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let category of categories">
+            <td>{{ category.name }}</td>
+            <td>
+                <button class="btn btn-sm btn-secondary" (click)="openModal(category.id)">{{ 'EDIT' | translate
+                    }}</button>
+                <button (click)="deleteCategory(category.id)" class="btn btn-sm btn-danger">{{ 'DELETE' |
+                    translate }}</button>
+            </td>
+        </tr>
+        <tr *ngIf="categories.length === 0">
+            <td colspan="2" class="text-center">{{ 'NO_CATEGORIES_FOUND' | translate }}</td>
+        </tr>
+    </tbody>
+</table>
