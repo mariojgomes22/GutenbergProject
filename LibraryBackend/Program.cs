@@ -1,6 +1,7 @@
 using LibraryBackend.Data;
-using Microsoft.EntityFrameworkCore;
 using LibraryBackend.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,18 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Service Registration
 // ==========================================
 
-// Add controllers to the container.
 builder.Services.AddControllers();
 
-
-// Register the Database Initializer service
 builder.Services.AddScoped<DatabaseInitializer>();
 
-// Configure Entity Framework Core with SQLite
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configure CORS policy to allow the frontend application
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
     var frontendUrl = builder.Configuration.GetValue<string>("HostConnection:Url");
@@ -48,13 +46,13 @@ using (var scope = app.Services.CreateScope())
 // HTTP Request Pipeline Configuration
 // ==========================================
 
-
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAngularApp");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 
 app.Run();

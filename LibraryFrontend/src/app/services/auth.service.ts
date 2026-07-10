@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { MsalService } from '@azure/msal-angular';
 import { Client } from '../models/client.model';
 import { environment } from '../../environments/environment';
 
@@ -9,35 +10,25 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
-  // Signal to hold current user state
   currentUser = signal<Client | null>(null);
 
-  constructor(private http: HttpClient) {
-    // Try to restore user from local storage on init
+  constructor(
+    private http: HttpClient,
+    private msalService: MsalService
+  ) {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       this.currentUser.set(JSON.parse(storedUser));
     }
   }
 
-  login(credentials: { email: string, password: string }): Observable<Client> {
-    return this.http.post<Client>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(user => {
-        this.currentUser.set(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      })
-    );
+  login(): void {
+    this.msalService.loginRedirect();
   }
 
-  register(data: { name: string, email: string, password: string }): Observable<Client> {
-    return this.http.post<Client>(`${this.apiUrl}/register`, data);
-  }
-
-  googleLogin(idToken: string): Observable<Client> {
-    console.log('AuthService: Sending Google ID Token to backend...', `${this.apiUrl}/google-login`);
-    return this.http.post<Client>(`${this.apiUrl}/google-login`, { idToken }).pipe(
+  loadCurrentUser(): Observable<Client> {
+    return this.http.get<Client>(`${this.apiUrl}/me`).pipe(
       tap(user => {
-        console.log('AuthService: Google Login Response:', user);
         this.currentUser.set(user);
         localStorage.setItem('currentUser', JSON.stringify(user));
       })
@@ -47,6 +38,7 @@ export class AuthService {
   logout(): void {
     this.currentUser.set(null);
     localStorage.removeItem('currentUser');
+    this.msalService.logoutRedirect();
   }
 
   get isAdmin(): boolean {

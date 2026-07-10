@@ -30,8 +30,7 @@ export class Profile implements OnInit {
   ) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.minLength(3)]]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -41,8 +40,7 @@ export class Profile implements OnInit {
       this.currentUser = user;
       this.profileForm.patchValue({
         name: user.name,
-        email: user.email,
-        password: user.password
+        email: user.email
       });
 
       this.loadMyLoans(user.id);
@@ -59,15 +57,11 @@ export class Profile implements OnInit {
     if (this.profileForm.invalid || !this.currentUser) return;
 
     const updatedData = { ...this.currentUser, ...this.profileForm.value };
-
-    // Ensure ID is present for update
     updatedData.id = this.currentUser.id;
-    // Keep role same as before
     updatedData.role = this.currentUser.role;
 
     this.clientService.updateClient(this.currentUser.id, updatedData).subscribe({
       next: () => {
-        // Update local auth state
         this.authService.currentUser.set(updatedData);
         localStorage.setItem('currentUser', JSON.stringify(updatedData));
 

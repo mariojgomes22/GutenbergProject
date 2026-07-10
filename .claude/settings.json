@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\mjgomes\\\\source\\\\repos\\\\GutenbergProject\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\mjgomes\\\\source\\\\repos\\\\GutenbergProject\\\\LibraryFrontend\\\\src\\\\app\\\\components\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(dotnet build *)",
+      "Bash(npm install *)",
+      "Bash(dotnet run *)",
+      "Bash(npm start *)",
+      "Bash(curl -s http://localhost:5214/api/books)",
+      "Bash(Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue)",
+      "Bash(npm uninstall *)",
+      "Bash(Remove-Item \"c:\\\\Users\\\\mjgomes\\\\source\\\\repos\\\\GutenbergProject\\\\LibraryBackend\\\\Services\\\\EmailService.cs\")"
+    ]
+  }
+}
