@@ -6,3 +6,6 @@ obj/
 *.db
 *.db-shm
 *.db-wal
+
+# Contains real Entra ID Tenant/Client IDs - copy appsettings.json.example instead
+appsettings.json
