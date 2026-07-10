@@ -15,8 +15,8 @@
   },
   "AzureAd": {
     "Instance": "https://login.microsoftonline.com/",
-    "TenantId": "db9ea2b7-3e25-4cd2-ad77-be6d08ca0db2",
-    "ClientId": "8fef973e-f72c-4531-802c-fd58646d6e1c",
+    "TenantId": "YOUR_TENANT_ID",
+    "ClientId": "YOUR_CLIENT_ID",
     "Scopes": "access_as_user"
   }
 }

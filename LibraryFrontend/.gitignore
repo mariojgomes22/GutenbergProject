@@ -41,3 +41,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Contains real Entra ID Tenant/Client IDs - copy the matching .example file instead
+src/environments/environment.ts
+src/environments/environment.prod.ts
