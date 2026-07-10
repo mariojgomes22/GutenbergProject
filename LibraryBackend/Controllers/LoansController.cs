@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryBackend.Data;
@@ -31,12 +32,20 @@ public class LoansController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Loan>>> GetLoans(int? clientId)
     {
+        var currentClient = await GetCurrentClientAsync();
+        if (currentClient == null) return Unauthorized();
+
         var query = _context.Loans
             .Include(l => l.Book)
             .Include(l => l.Client)
             .AsQueryable();
 
-        if (clientId.HasValue)
+        if (currentClient.Role != "Admin")
+        {
+            // Users only ever see their own loans, regardless of what clientId was requested.
+            query = query.Where(l => l.ClientId == currentClient.Id);
+        }
+        else if (clientId.HasValue)
         {
             query = query.Where(l => l.ClientId == clientId.Value);
         }
@@ -52,6 +61,15 @@ public class LoansController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Loan>> PostLoan(Loan loan)
     {
+        var currentClient = await GetCurrentClientAsync();
+        if (currentClient == null) return Unauthorized();
+
+        if (currentClient.Role != "Admin")
+        {
+            // Users can only request loans for themselves, never on behalf of someone else.
+            loan.ClientId = currentClient.Id;
+        }
+
         // Check if book is available
         var book = await _context.Books.FindAsync(loan.BookId);
         if (book == null || !book.IsAvailable)
@@ -84,8 +102,16 @@ public class LoansController : ControllerBase
     [HttpPut("{id}/return")]
     public async Task<IActionResult> ReturnLoan(int id)
     {
+        var currentClient = await GetCurrentClientAsync();
+        if (currentClient == null) return Unauthorized();
+
         var loan = await _context.Loans.FindAsync(id);
         if (loan == null) return NotFound();
+
+        if (currentClient.Role != "Admin" && loan.ClientId != currentClient.Id)
+        {
+            return Forbid();
+        }
 
         if (loan.ReturnDate != null)
         {
@@ -103,5 +129,19 @@ public class LoansController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    /// <summary>
+    /// Resolves the Client record for the currently authenticated user.
+    /// </summary>
+    private async Task<Client?> GetCurrentClientAsync()
+    {
+        var email = User.FindFirst("preferred_username")?.Value
+                    ?? User.FindFirst(ClaimTypes.Email)?.Value
+                    ?? User.FindFirst("upn")?.Value;
+
+        if (string.IsNullOrEmpty(email)) return null;
+
+        return await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
     }
 }

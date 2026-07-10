@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryBackend.Data;
@@ -51,6 +52,7 @@ public class CategoriesController : ControllerBase
     /// <param name="category">The category to create.</param>
     /// <returns>The created category.</returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Category>> PostCategory(Category category)
     {
         _context.Categories.Add(category);
@@ -65,6 +67,7 @@ public class CategoriesController : ControllerBase
     /// <param name="category">The updated category object.</param>
     /// <returns>NoContent if successful; otherwise, BadRequest or NotFound.</returns>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> PutCategory(int id, Category category)
     {
         if (id != category.Id) return BadRequest();
@@ -90,6 +93,7 @@ public class CategoriesController : ControllerBase
     /// <param name="id">The ID of the category to delete.</param>
     /// <returns>NoContent if successful; otherwise, NotFound.</returns>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var category = await _context.Categories.FindAsync(id);

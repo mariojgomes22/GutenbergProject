@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryBackend.Data;
@@ -76,6 +77,7 @@ public class BooksController : ControllerBase
     /// <param name="book">The book to add.</param>
     /// <returns>The created book.</returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Book>> PostBook(Book book)
     {
         _context.Books.Add(book);
@@ -90,6 +92,7 @@ public class BooksController : ControllerBase
     /// <param name="book">The updated book object.</param>
     /// <returns>NoContent if successful; otherwise, BadRequest or NotFound.</returns>
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> PutBook(int id, Book book)
     {
         if (id != book.Id) return BadRequest();
@@ -108,6 +111,7 @@ public class BooksController : ControllerBase
     /// <param name="id">The ID of the book to delete.</param>
     /// <returns>NoContent if successful; otherwise, NotFound.</returns>
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteBook(int id)
     {
         var book = await _context.Books.FindAsync(id);

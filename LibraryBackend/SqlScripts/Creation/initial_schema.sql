@@ -49,4 +49,4 @@ CREATE INDEX IF NOT EXISTS "IX_Loans_ClientId" ON "Loans" ("ClientId");
 INSERT INTO "DbVersion" ("Version", "AppliedDate") VALUES (2, CURRENT_TIMESTAMP);
 
 -- Create admin user
-INSERT INTO "Clients" ("Id", "Name", "Email", "Role") VALUES (1, "admin", "admin@cm.pt", "Admin");
+INSERT INTO "Clients" ("Id", "Name", "Email", "Role") VALUES (1, "admin", "MarioGomes@criticalmanufacturing.com", "Admin");

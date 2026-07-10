@@ -1,5 +1,6 @@
 using LibraryBackend.Data;
 using LibraryBackend.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+
+builder.Services.AddTransient<IClaimsTransformation, RoleClaimsTransformation>();
 
 builder.Services.AddCors(options =>
 {

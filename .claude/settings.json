@@ -13,7 +13,20 @@
       "Bash(Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue)",
       "Bash(npm uninstall *)",
       "Bash(Remove-Item \"c:\\\\Users\\\\mjgomes\\\\source\\\\repos\\\\GutenbergProject\\\\LibraryBackend\\\\Services\\\\EmailService.cs\")",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(git config *)",
+      "Bash(gh auth *)",
+      "PowerShell(Get-Command gh -ErrorAction SilentlyContinue)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(grep -E \"\\\\.db$|^LibraryBackend/\\(bin|obj\\)/\")",
+      "Bash(echo \"exit:$?\")",
+      "Bash(dotnet list *)",
+      "Bash(npm audit *)",
+      "PowerShell(Get-Command sqlite3 -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command py -ErrorAction SilentlyContinue)",
+      "Bash(python -c ' *)"
     ]
   }
 }
