@@ -29,7 +29,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     // Processa o redirect de volta da Microsoft após autenticação
-    this.msalService.handleRedirectObservable().subscribe();
+    this.msalService.handleRedirectObservable({ navigateToLoginRequestUrl: false }).subscribe();
 
     // Quando o MSAL terminar de processar o login, carrega o utilizador da API
     this.msalBroadcastService.msalSubject$
