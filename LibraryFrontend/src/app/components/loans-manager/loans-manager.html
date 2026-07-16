@@ -41,6 +41,7 @@
                 <th>{{ 'TABLE_TITLE' | translate }}</th>
                 <th>{{ 'NAME' | translate }}</th>
                 <th>{{ 'LOAN_DATE' | translate }}</th>
+                <th>{{ 'DUE_DATE' | translate }}</th>
                 <th>{{ 'RETURN_DATE' | translate }}</th>
                 <th>{{ 'ACTIONS' | translate }}</th>
             </tr>
@@ -50,6 +51,7 @@
                 <td>{{ loan.book?.title }}</td>
                 <td>{{ loan.client?.name }}</td>
                 <td>{{ loan.loanDate | date:'short' }}</td>
+                <td>{{ loan.dueDate ? (loan.dueDate | date:'short') : '-' }}</td>
                 <td>
                     <span *ngIf="loan.returnDate">{{ loan.returnDate | date:'short' }}</span>
                     <span *ngIf="!loan.returnDate" class="badge-danger">{{ 'NOT_RETURNED' | translate }}</span>
@@ -60,7 +62,7 @@
                 </td>
             </tr>
             <tr *ngIf="loans.length === 0">
-                <td colspan="5" class="text-center">{{ 'NO_LOANS_FOUND' | translate }}</td>
+                <td colspan="6" class="text-center">{{ 'NO_LOANS_FOUND' | translate }}</td>
             </tr>
         </tbody>
     </table>

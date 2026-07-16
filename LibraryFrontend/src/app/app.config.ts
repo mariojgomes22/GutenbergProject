@@ -46,7 +46,7 @@ export const appConfig: ApplicationConfig = {
                 {
                     interactionType: InteractionType.Redirect,
                     protectedResourceMap: new Map([
-                        [environment.apiUrl, [environment.apiScope]]
+                        [`${environment.apiUrl}/*`, [environment.apiScope]]
                     ])
                 }
             )

@@ -26,7 +26,8 @@
       "PowerShell(Get-Command sqlite3 -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Command py -ErrorAction SilentlyContinue)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

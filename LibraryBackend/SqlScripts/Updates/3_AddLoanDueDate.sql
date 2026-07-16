@@ -1,0 +1,1 @@
+ALTER TABLE "Loans" ADD COLUMN "DueDate" TEXT NULL;

@@ -17,14 +17,6 @@
         </div>
 
         <div class="form-group">
-            <label for="isbn">ISBN <span class="required-asterisk">*</span></label>
-            <input type="text" id="isbn" class="form-control" formControlName="isbn">
-            <div *ngIf="submitted && bookForm.get('isbn')?.errors?.['required']" class="text-danger">ISBN is
-                required
-            </div>
-        </div>
-
-        <div class="form-group">
             <label for="category">Category</label>
             <select id="category" class="form-control" formControlName="categoryId">
                 <option value="">-- Select Category --</option>

@@ -21,11 +21,6 @@ public class Book
     public string Author { get; set; } = string.Empty;
 
     /// <summary>
-    /// The ISBN (International Standard Book Number) of the book.
-    /// </summary>
-    public string ISBN { get; set; } = string.Empty;
-
-    /// <summary>
     /// Indicates whether the book is currently available for loan.
     /// </summary>
     public bool IsAvailable { get; set; } = true;

@@ -87,6 +87,7 @@ public class LoansController : ControllerBase
         book.IsAvailable = false;
         loan.LoanDate = DateTime.UtcNow;
         loan.ReturnDate = null;
+        loan.DueDate = loan.LoanDate.AddDays(30);
         
         _context.Loans.Add(loan);
         await _context.SaveChangesAsync();

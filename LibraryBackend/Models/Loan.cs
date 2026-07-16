@@ -39,4 +39,9 @@ public class Loan
     /// The date and time when the book was returned (null if not yet returned).
     /// </summary>
     public DateTime? ReturnDate { get; set; }
+
+    /// <summary>
+    /// The date by which the book is expected to be returned (30 days after the loan date).
+    /// </summary>
+    public DateTime? DueDate { get; set; }
 }

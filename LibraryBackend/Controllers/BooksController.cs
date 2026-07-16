@@ -27,7 +27,7 @@ public class BooksController : ControllerBase
     /// <summary>
     /// Retrieves a paginated list of books, optionally filtered by a search term.
     /// </summary>
-    /// <param name="search">The search term to filter by title, author, or ISBN.</param>
+    /// <param name="search">The search term to filter by title or author.</param>
     /// <param name="page">The page number (default is 1).</param>
     /// <param name="pageSize">The number of items per page (default is 10).</param>
     /// <returns>A paginated result containing the list of books.</returns>
@@ -40,7 +40,7 @@ public class BooksController : ControllerBase
 
         if (!string.IsNullOrEmpty(search))
         {
-            query = query.Where(b => b.Title.Contains(search) || b.Author.Contains(search) || b.ISBN.Contains(search));
+            query = query.Where(b => b.Title.Contains(search) || b.Author.Contains(search));
         }
 
         var totalCount = await query.CountAsync();

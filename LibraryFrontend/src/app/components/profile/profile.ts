@@ -7,11 +7,13 @@ import { LoanService } from '../../services/loan.service';
 import { Client } from '../../models/client.model';
 import { Loan } from '../../models/loan.model';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, MatDialogModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -26,7 +28,8 @@ export class Profile implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private clientService: ClientService,
-    private loanService: LoanService
+    private loanService: LoanService,
+    private dialog: MatDialog
   ) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
@@ -50,6 +53,25 @@ export class Profile implements OnInit {
   loadMyLoans(userId: number): void {
     this.loanService.getLoans(userId).subscribe(data => {
       this.myLoans = data;
+    });
+  }
+
+  returnLoan(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Return Book',
+        message: 'Return this book?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && this.currentUser) {
+        this.loanService.returnLoan(id).subscribe({
+          next: () => this.loadMyLoans(this.currentUser!.id),
+          error: (err) => console.error(err)
+        });
+      }
     });
   }
 

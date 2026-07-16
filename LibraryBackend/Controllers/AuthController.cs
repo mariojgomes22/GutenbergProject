@@ -27,7 +27,7 @@ public class AuthController(LibraryContext context) : ControllerBase
         if (user == null)
         {
             // First login — cria o utilizador automaticamente com role User
-            var name = User.FindFirst("name")?.Value ?? email;
+            var name = email.Split('@')[0];
             user = new Client { Name = name, Email = email, Role = "User" };
             _context.Clients.Add(user);
             await _context.SaveChangesAsync();

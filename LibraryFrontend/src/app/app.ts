@@ -31,10 +31,12 @@ export class App implements OnInit {
     // Processa o redirect de volta da Microsoft após autenticação
     this.msalService.handleRedirectObservable({ navigateToLoginRequestUrl: false }).subscribe();
 
-    // Quando o MSAL terminar de processar o login, carrega o utilizador da API
+    // Quando o MSAL terminar de processar o login, define a conta activa e carrega o utilizador da API
     this.msalBroadcastService.msalSubject$
       .pipe(filter(e => e.eventType === EventType.LOGIN_SUCCESS))
-      .subscribe(() => {
+      .subscribe((result) => {
+        const payload = result.payload as AuthenticationResult;
+        this.msalService.instance.setActiveAccount(payload.account);
         this.authService.loadCurrentUser().subscribe(() => {
           this.router.navigate(['/books']);
         });
@@ -45,8 +47,15 @@ export class App implements OnInit {
       .pipe(filter(status => status === InteractionStatus.None))
       .subscribe(() => {
         const accounts = this.msalService.instance.getAllAccounts();
-        if (accounts.length > 0 && !this.authService.currentUser()) {
-          this.authService.loadCurrentUser().subscribe();
+        if (accounts.length > 0 && !this.msalService.instance.getActiveAccount()) {
+          this.msalService.instance.setActiveAccount(accounts[0]);
+        }
+        if (accounts.length > 0) {
+          if (!this.authService.currentUser()) {
+            this.authService.loadCurrentUser().subscribe();
+          }
+        } else {
+          this.authService.clearCurrentUser();
         }
       });
   }

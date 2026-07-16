@@ -98,11 +98,14 @@ export class BooksList implements OnInit {
     const currentUser = this.authService.currentUser();
     if (!currentUser) return;
 
+    const expectedDeliveryDate = new Date();
+    expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 30);
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
         title: 'Request Book',
-        message: `Request the book "${book.title}"?`
+        message: `Request the book "${book.title}"?\n\nExpected delivery date: ${expectedDeliveryDate.toLocaleDateString()}`
       }
     });
 

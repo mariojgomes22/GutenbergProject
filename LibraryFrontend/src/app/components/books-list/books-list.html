@@ -22,7 +22,6 @@
       <th>{{ 'TABLE_TITLE' | translate }}</th>
       <th>{{ 'TABLE_AUTHOR' | translate }}</th>
       <th>{{ 'TABLE_CATEGORY' | translate }}</th>
-      <th>{{ 'TABLE_ISBN' | translate }}</th>
       <th>{{ 'TABLE_STATUS' | translate }}</th>
       <th>{{ 'ACTIONS' | translate }}</th>
     </tr>
@@ -32,7 +31,6 @@
       <td>{{ book.title }}</td>
       <td>{{ book.author }}</td>
       <td>{{ book.category?.name || '-' }}</td>
-      <td>{{ book.isbn }}</td>
       <td>
         <span [class.badge-success]="book.isAvailable" [class.badge-danger]="!book.isAvailable">
           {{ book.isAvailable ? 'Yes' : 'No' }}
