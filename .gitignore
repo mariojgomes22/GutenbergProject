@@ -11,6 +11,14 @@
 npm-debug.log
 yarn-error.log
 
+# .NET
+bin/
+obj/
+*.user
+
+# Claude Code (local settings/permissions)
+.claude/
+
 # IDEs and editors
 .idea/
 .project

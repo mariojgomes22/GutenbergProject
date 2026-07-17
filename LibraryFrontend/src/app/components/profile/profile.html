@@ -41,23 +41,30 @@
         <tr>
           <th>{{ 'TABLE_TITLE' | translate }}</th>
           <th>{{ 'LOAN_DATE' | translate }}</th>
+          <th>{{ 'DUE_DATE' | translate }}</th>
           <th>{{ 'RETURN_DATE' | translate }}</th>
           <th>{{ 'TABLE_STATUS' | translate }}</th>
+          <th>{{ 'ACTIONS' | translate }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let loan of myLoans">
           <td>{{ loan.book?.title }}</td>
           <td>{{ loan.loanDate | date:'mediumDate' }}</td>
+          <td>{{ loan.dueDate ? (loan.dueDate | date:'mediumDate') : '-' }}</td>
           <td>{{ loan.returnDate ? (loan.returnDate | date:'mediumDate') : '-' }}</td>
           <td>
             <span [class.badge-success]="loan.returnDate" [class.badge-danger]="!loan.returnDate">
               {{ loan.returnDate ? ('RETURNED' | translate) : ('ACTIVE' | translate) }}
             </span>
           </td>
+          <td>
+            <button *ngIf="!loan.returnDate" (click)="returnLoan(loan.id)" class="btn btn-sm btn-primary">{{
+              'RETURN' | translate }}</button>
+          </td>
         </tr>
         <tr *ngIf="myLoans.length === 0">
-          <td colspan="4" class="text-center">{{ 'NO_RECORDS_FOUND' | translate }}</td>
+          <td colspan="6" class="text-center">{{ 'NO_RECORDS_FOUND' | translate }}</td>
         </tr>
       </tbody>
     </table>

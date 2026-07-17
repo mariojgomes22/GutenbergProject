@@ -36,9 +36,13 @@ export class AuthService {
   }
 
   logout(): void {
+    this.clearCurrentUser();
+    this.msalService.logoutRedirect();
+  }
+
+  clearCurrentUser(): void {
     this.currentUser.set(null);
     localStorage.removeItem('currentUser');
-    this.msalService.logoutRedirect();
   }
 
   get isAdmin(): boolean {

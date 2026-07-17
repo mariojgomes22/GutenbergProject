@@ -9,4 +9,5 @@ export interface Loan {
     client?: Client;
     loanDate?: string;
     returnDate?: string | null;
+    dueDate?: string | null;
 }

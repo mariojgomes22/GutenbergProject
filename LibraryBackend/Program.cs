@@ -3,6 +3,11 @@ using LibraryBackend.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using System.IdentityModel.Tokens.Jwt;
+
+// Preserve raw JWT claim types (e.g. "upn", "oid") instead of remapping them
+// to the legacy WS-2005 claim URIs, so User.FindFirst("upn") etc. work as expected.
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 var builder = WebApplication.CreateBuilder(args);
 

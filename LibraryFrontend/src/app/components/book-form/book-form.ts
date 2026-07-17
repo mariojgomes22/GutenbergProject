@@ -40,7 +40,6 @@ export class BookForm implements OnInit {
     this.bookForm = this.fb.group({
       title: ['', Validators.required],
       author: ['', Validators.required],
-      isbn: ['', Validators.required],
       isAvailable: [true],
       categoryId: ['']
     });

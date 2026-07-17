@@ -23,6 +23,7 @@ import { BookForm } from '../book-form/book-form';
 export class BooksList implements OnInit {
   books: Book[] = [];
   message: string = '';
+  myActiveLoansByBookId = new Map<number, number>();
 
   // Pagination & Search
   searchQuery: string = '';
@@ -40,6 +41,26 @@ export class BooksList implements OnInit {
 
   ngOnInit(): void {
     this.loadBooks();
+    this.loadMyActiveLoans();
+  }
+
+  loadMyActiveLoans(): void {
+    const currentUser = this.authService.currentUser();
+    if (!currentUser) {
+      this.myActiveLoansByBookId.clear();
+      return;
+    }
+
+    this.loanService.getLoans(currentUser.id).subscribe(loans => {
+      this.myActiveLoansByBookId.clear();
+      loans.filter(loan => !loan.returnDate).forEach(loan => {
+        this.myActiveLoansByBookId.set(loan.bookId, loan.id);
+      });
+    });
+  }
+
+  getMyLoanId(bookId: number): number | undefined {
+    return this.myActiveLoansByBookId.get(bookId);
   }
 
   loadBooks(): void {
@@ -98,11 +119,14 @@ export class BooksList implements OnInit {
     const currentUser = this.authService.currentUser();
     if (!currentUser) return;
 
+    const expectedDeliveryDate = new Date();
+    expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 30);
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
         title: 'Request Book',
-        message: `Request the book "${book.title}"?`
+        message: `Request the book "${book.title}"?\n\nExpected delivery date: ${expectedDeliveryDate.toLocaleDateString()}`
       }
     });
 
@@ -118,10 +142,38 @@ export class BooksList implements OnInit {
           next: () => {
             this.message = `Book "${book.title}" requested successfully!`;
             this.loadBooks();
+            this.loadMyActiveLoans();
             setTimeout(() => this.message = '', 3000);
           },
           error: () => {
             this.message = 'Error requesting book.';
+          }
+        });
+      }
+    });
+  }
+
+  returnBook(book: Book): void {
+    const loanId = this.myActiveLoansByBookId.get(book.id);
+    if (!loanId) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Return Book',
+        message: `Return the book "${book.title}"?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loanService.returnLoan(loanId).subscribe({
+          next: () => {
+            this.loadBooks();
+            this.loadMyActiveLoans();
+          },
+          error: () => {
+            this.message = 'Error returning book.';
           }
         });
       }
