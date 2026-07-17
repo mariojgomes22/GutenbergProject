@@ -23,6 +23,7 @@
       <th>{{ 'TABLE_AUTHOR' | translate }}</th>
       <th>{{ 'TABLE_CATEGORY' | translate }}</th>
       <th>{{ 'TABLE_STATUS' | translate }}</th>
+      <th *ngIf="authService.isAdmin">{{ 'BORROWED_BY' | translate }}</th>
       <th>{{ 'ACTIONS' | translate }}</th>
     </tr>
   </thead>
@@ -36,6 +37,7 @@
           {{ book.isAvailable ? 'Yes' : 'No' }}
         </span>
       </td>
+      <td *ngIf="authService.isAdmin">{{ !book.isAvailable && book.borrowedByEmail ? book.borrowedByEmail : '-' }}</td>
       <td>
         <!-- Admin Actions -->
         <ng-container *ngIf="authService.isAdmin">
@@ -47,13 +49,15 @@
         <ng-container *ngIf="!authService.isAdmin && authService.isLoggedIn">
           <button *ngIf="book.isAvailable" (click)="requestBook(book)" class="btn btn-sm btn-primary">{{ 'REQUEST' |
             translate }}</button>
-          <span *ngIf="!book.isAvailable" class="text-danger" style="font-size: 0.8rem;">{{ 'UNAVAILABLE' |
-            translate}}</span>
+          <button *ngIf="!book.isAvailable && getMyLoanId(book.id)" (click)="returnBook(book)"
+            class="btn btn-sm btn-primary">{{ 'RETURN' | translate }}</button>
+          <span *ngIf="!book.isAvailable && !getMyLoanId(book.id)" class="text-danger" style="font-size: 0.8rem;">{{
+            'UNAVAILABLE' | translate}}</span>
         </ng-container>
       </td>
     </tr>
     <tr *ngIf="books.length === 0">
-      <td colspan="5" class="text-center">{{ 'NO_BOOKS_FOUND' | translate }}</td>
+      <td [attr.colspan]="authService.isAdmin ? 6 : 5" class="text-center">{{ 'NO_BOOKS_FOUND' | translate }}</td>
     </tr>
   </tbody>
 </table>

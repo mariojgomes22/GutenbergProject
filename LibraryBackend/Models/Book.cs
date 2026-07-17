@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace LibraryBackend.Models;
 
 /// <summary>
@@ -34,4 +36,10 @@ public class Book
     /// Navigation property for the book's category.
     /// </summary>
     public Category? Category { get; set; }
+
+    /// <summary>
+    /// Email of the client currently holding this book on loan (Admin-only; not persisted).
+    /// </summary>
+    [NotMapped]
+    public string? BorrowedByEmail { get; set; }
 }

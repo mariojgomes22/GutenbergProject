@@ -46,6 +46,20 @@ public class BooksController : ControllerBase
         var totalCount = await query.CountAsync();
         var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+        if (User.IsInRole("Admin"))
+        {
+            var borrowedBookIds = items.Where(b => !b.IsAvailable).Select(b => b.Id).ToList();
+            var activeLoans = await _context.Loans
+                .Include(l => l.Client)
+                .Where(l => l.ReturnDate == null && borrowedBookIds.Contains(l.BookId))
+                .ToListAsync();
+
+            foreach (var book in items)
+            {
+                book.BorrowedByEmail = activeLoans.FirstOrDefault(l => l.BookId == book.Id)?.Client?.Email;
+            }
+        }
+
         return new PagedResult<Book>
         {
             Items = items,

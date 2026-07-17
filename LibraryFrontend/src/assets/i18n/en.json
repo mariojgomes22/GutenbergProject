@@ -30,6 +30,7 @@
     "TABLE_AUTHOR": "Author",
     "TABLE_CATEGORY": "Category",
     "TABLE_STATUS": "Availability",
+    "BORROWED_BY": "Borrowed By",
     "AVAILABLE": "Available",
     "UNAVAILABLE": "Unavailable",
     "REQUEST": "Request",

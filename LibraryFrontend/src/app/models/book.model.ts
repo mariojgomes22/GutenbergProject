@@ -5,4 +5,5 @@ export interface Book {
     isAvailable: boolean;
     categoryId?: number;
     category?: { id: number, name: string };
+    borrowedByEmail?: string | null;
 }
