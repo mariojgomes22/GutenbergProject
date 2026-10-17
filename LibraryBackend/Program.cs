@@ -54,8 +54,6 @@ using (var scope = app.Services.CreateScope())
 // HTTP Request Pipeline Configuration
 // ==========================================
 
-app.UseHttpsRedirection();
-
 app.UseCors("AllowAngularApp");
 
 app.UseAuthentication();

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gutenberg-frontend
+  labels:
+    app: gutenberg-test
+    component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gutenberg-test
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: gutenberg-test
+        component: frontend
+    spec:
+      imagePullSecrets:
+        - name: gutenberg-registry
+      containers:
+        - name: frontend
+          image: image-registry-placeholder/gutenberg-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

@@ -1,0 +1,20 @@
+# The namespace's allow-intra-ingress policy selects every pod, so explicitly allow
+# traffic from the OpenShift router to the frontend.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gutenberg-allow-router
+  labels:
+    app: gutenberg-test
+spec:
+  podSelector:
+    matchLabels:
+      app: gutenberg-test
+      component: frontend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              policy-group.network.openshift.io/ingress: ""

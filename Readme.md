@@ -36,6 +36,21 @@ ng serve
 ```
 Navigate to `http://localhost:55396/` (or the port shown in console).
 
+## Deploying to OpenShift (test)
+
+Manifests are split by resource in `openshift/` and applied by `deploy.ps1` in filename order. The cluster has no internal image registry, so images are built in the cluster and pushed to an external registry (e.g. ghcr.io). Log in with `oc`, switch to the target project, then run:
+```powershell
+$ad = (Get-Content LibraryBackend/appsettings.json -Raw | ConvertFrom-Json).AzureAd
+./openshift/deploy.ps1 -ClientId $ad.ClientId -TenantId $ad.TenantId `
+    -Registry ghcr.io/<github-user> -RegistryUser <github-user> -RegistryToken <token>
+```
+This builds both images, pushes them to the registry and deploys them. The frontend's nginx serves the Angular app and proxies `/api` to the backend, and SQLite is stored on a PVC. Use `-Only backend` or `-Only frontend` to rebuild just one. Register the printed redirect URI as a SPA redirect URI in the Entra app registration.
+
+Remove everything with:
+```powershell
+oc delete deployment,service,route,pvc,secret,networkpolicy,buildconfig,build -l app=gutenberg-test
+```
+
 ## Database Updates
 The application checks the `DbVersion` table and looks for new scripts in `SqlScripts/Updates/` at startup to apply schema changes automatically.
 

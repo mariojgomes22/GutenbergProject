@@ -1,0 +1,49 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: gutenberg-backend
+  labels:
+    app: gutenberg-test
+spec:
+  source:
+    type: Binary
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: DockerImage
+      name: image-registry-placeholder/gutenberg-backend:latest
+    pushSecret:
+      name: gutenberg-registry
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: gutenberg-frontend
+  labels:
+    app: gutenberg-test
+spec:
+  source:
+    type: Binary
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      buildArgs:
+        - name: MSAL_CLIENT_ID
+          value: "PLACEHOLDER_CLIENT_ID"
+        - name: MSAL_TENANT_ID
+          value: "PLACEHOLDER_TENANT_ID"
+        - name: MSAL_REDIRECT_URI
+          value: "PLACEHOLDER_REDIRECT_URI"
+  output:
+    to:
+      kind: DockerImage
+      name: image-registry-placeholder/gutenberg-frontend:latest
+    pushSecret:
+      name: gutenberg-registry
+  resources:
+    limits:
+      memory: 2Gi

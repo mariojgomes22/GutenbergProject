@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gutenberg-backend
+  labels:
+    app: gutenberg-test
+    component: backend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: gutenberg-test
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: gutenberg-test
+        component: backend
+    spec:
+      imagePullSecrets:
+        - name: gutenberg-registry
+      containers:
+        - name: backend
+          image: image-registry-placeholder/gutenberg-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AzureAd__Instance
+              value: https://login.microsoftonline.com/
+            - name: AzureAd__Scopes
+              value: access_as_user
+            - name: ConnectionStrings__DefaultConnection
+              value: Data Source=/data/library.db
+          envFrom:
+            - secretRef:
+                name: gutenberg-backend-config
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: gutenberg-data

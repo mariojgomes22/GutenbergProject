@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gutenberg-backend
+  labels:
+    app: gutenberg-test
+    component: backend
+spec:
+  selector:
+    app: gutenberg-test
+    component: backend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gutenberg-frontend
+  labels:
+    app: gutenberg-test
+    component: frontend
+spec:
+  selector:
+    app: gutenberg-test
+    component: frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
